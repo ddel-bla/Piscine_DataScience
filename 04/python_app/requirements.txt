@@ -1,0 +1,9 @@
+psycopg2-binary
+jupyterlab
+pandas
+pycodestyle
+numpy
+matplotlib
+seaborn
+python-dotenv
+ipykernel

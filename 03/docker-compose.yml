@@ -1,0 +1,67 @@
+services:
+  postgres:
+    container_name: postgres_db
+    image: postgres:15
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER     : ${POSTGRES_USER}
+      POSTGRES_PASSWORD : ${POSTGRES_PASSWORD}
+      POSTGRES_DB       : ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - exercises:/exercises
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL     : ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD  : ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+    - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  python_app:
+    container_name: python_dev
+    build: ./python_app
+    restart: unless-stopped
+    ports:
+      - "8888:8888"  # Jupyter
+    environment:
+      POSTGRES_USER     : ${POSTGRES_USER}
+      POSTGRES_PASSWORD : ${POSTGRES_PASSWORD}
+      POSTGRES_HOST     : postgres_db
+      POSTGRES_DB       : ${POSTGRES_DB}
+      DISPLAY           : ${DISPLAY}
+      PYTHONUNBUFFERED  : 1
+      MPLBACKEND        : agg
+    volumes:
+      - exercises:/app/exercises
+      - ./output:/app/output
+      - ./notebooks:/app/notebooks
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  exercises:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: $PWD/exercises
