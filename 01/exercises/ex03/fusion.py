@@ -1,5 +1,5 @@
 
-import os, glob, psycopg2, csv, sys, re
+import os,  psycopg2, sys
 from pathlib import Path
 
 import time

@@ -1,5 +1,5 @@
 
-import os, glob, psycopg2, csv, sys, re
+import os, psycopg2, sys
 from pathlib import Path
 
 import time
@@ -24,6 +24,7 @@ def get_db_config() -> dict :
         "port": os.environ.get("POSTGRES_PORT", "5432"),
     }
 
+@timer_decorator
 def remove_duplicates(table_name):
     DB_CONFIG = get_db_config()
 
@@ -80,13 +81,3 @@ def remove_duplicates(table_name):
 
 if __name__ == "__main__":
     remove_duplicates("customers")
-    
-    
-# -- Create a new table with distinct rows
-# CREATE TABLE customer_distinct AS
-# SELECT DISTINCT ON (event_time, event_type, product_id, price, user_id, user_session) *
-# FROM customer;
-
-# -- Drop the original and rename the new one
-# DROP TABLE customer;
-# ALTER TABLE customer_distinct RENAME TO customer;

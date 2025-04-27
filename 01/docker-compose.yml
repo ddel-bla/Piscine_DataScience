@@ -12,6 +12,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - exercises:/exercises
+    networks:
+      - ds_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -30,6 +32,8 @@ services:
     volumes:
     - pgadmin_data:/var/lib/pgadmin
     - exercises:/exercises
+    networks:
+      - ds_network
     depends_on:
       postgres:
         condition: service_healthy
@@ -43,3 +47,7 @@ volumes:
       o: bind
       type: none
       device: $PWD/exercises
+
+networks:
+  ds_network:
+    driver: bridge
