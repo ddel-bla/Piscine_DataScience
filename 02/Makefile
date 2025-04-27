@@ -7,78 +7,40 @@ up:
 down:
 	docker compose down
 
-# Database targets
-psql:
-	docker exec -it postgres_db psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-
-run-postgres:
+postgres:
 	docker exec -it postgres_db bash
 
-run-pgadmin:
-	docker exec -it pgadmin bash
-
-# Python development targets
-python-shell:
+python:
 	docker exec -it python_dev bash
 
 jupyter:
 	@echo "Jupyter Lab running at http://localhost:8888"
-	@open http://localhost:8888  # MacOS specific, remove for Linux
 
-run-script:
-	docker exec -it python_dev python /app/exercises/$(SCRIPT)
+# Para ejercicios específicos
+ex00:
+	docker exec -it python_dev python /app/exercises/ex00/pie.py
 
-test:
-	docker exec -it python_dev pytest /app/exercises/tests
+ex01:
+	docker exec -it python_dev python /app/exercises/ex01/chart.py
 
-python-build:
-	docker compose build python_app
+ex02:
+	docker exec -it python_dev python /app/exercises/ex02/mustache.py
 
-python-logs:
-	docker compose logs -f python_app
+ex03:
+	docker exec -it python_dev python /app/exercises/ex03/Building.py
 
-# Data management
-copy-data:
-	docker cp postgres_db:/var/lib/postgresql/data ./data
+ex04:
+	docker exec -it python_dev python /app/exercises/ex04/elbow.py
 
-copy-output:
-	@mkdir -p ./output
-	docker cp python_dev:/app/output/ ./output
+ex05:
+	docker exec -it python_dev python /app/exercises/ex05/Clustering.py
 
-# General management
+# Utilitarios
 logs:
-	docker compose logs -f postgres pgadmin python_app
+	docker compose logs -f
 
 clean:
-	- docker stop $$(docker ps -aq); docker rm $$(docker ps -aq); docker volume rm $$(docker volume ls -q)
+	docker compose down
+	docker stop $$(docker ps -aq); docker rm $$(docker ps -aq); docker volume rm $$(docker volume ls -q)
 
-remove-all: down clean
-
-# Helper targets
-install-deps:
-	pip install -r python_app/requirements.txt
-
-help:
-	@echo "Development Targets:"
-	@echo "  up             - Start all services"
-	@echo "  down           - Stop all services"
-	@echo "  python-shell   - Access Python container shell"
-	@echo "  run-script     - Run a Python script (make run-script SCRIPT=path/to/script.py)"
-	@echo "  jupyter        - Open Jupyter Lab in browser"
-	@echo "  test           - Run tests"
-	@echo "  copy-output    - Copy generated plots/output from container"
-	@echo ""
-	@echo "Database Targets:"
-	@echo "  psql           - Connect to PostgreSQL with psql"
-	@echo "  run-postgres   - Access Postgres container shell"
-	@echo "  run-pgadmin    - Access pgAdmin container shell"
-	@echo ""
-	@echo "Utility Targets:"
-	@echo "  python-build   - Rebuild Python container"
-	@echo "  install-deps   - Install Python dependencies locally"
-	@echo "  logs           - View service logs"
-	@echo "  clean          - Remove all containers and volumes"
-	@echo "  help           - Show this help message"
-
-.PHONY: up down psql run-postgres run-pgadmin python-shell jupyter run-script test python-build \
-		copy-data copy-output logs clean remove-all install-deps help
+.PHONY: up down postgres python run ex00 ex01 ex02 ex03 ex04 ex05 jupyter logs clean help

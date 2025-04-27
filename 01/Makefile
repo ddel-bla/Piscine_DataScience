@@ -8,12 +8,6 @@ down:
 run:
 	docker exec -it postgres_db bash
 
-run-pgadmin:
-	docker exec -it pgadmin bash
-
-copy-data:
-	docker cp postgres_db:/var/lib/postgresql/data ./data
-
 logs:
 	docker compose logs -f postgres pgadmin
 

@@ -31,6 +31,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD  : ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
     - pgadmin_data:/var/lib/pgadmin
+    - exercises:/exercises
     networks:
       - ds_network
     depends_on:
@@ -48,14 +49,12 @@ services:
       POSTGRES_PASSWORD : ${POSTGRES_PASSWORD}
       POSTGRES_HOST     : postgres_db
       POSTGRES_DB       : ${POSTGRES_DB}
-      DISPLAY           : ${DISPLAY}
       PYTHONUNBUFFERED  : 1
       MPLBACKEND        : agg
     volumes:
       - exercises:/app/exercises
       - ./output:/app/output
       - ./notebooks:/app/notebooks
-      - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       - ds_network
     depends_on:
