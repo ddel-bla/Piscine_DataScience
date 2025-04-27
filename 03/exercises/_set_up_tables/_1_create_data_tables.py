@@ -16,7 +16,7 @@ def timer_decorator(func):
         return result
     return wrapper
 
-DATAFILES_DIR = "/app/exercises/subject"
+DATAFILES_DIR = "/exercises/subject"
 
 def get_db_config() -> dict :
     return {

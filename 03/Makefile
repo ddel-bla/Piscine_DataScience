@@ -26,10 +26,10 @@ jupyter:
 	@open http://localhost:8888  # MacOS specific, remove for Linux
 
 run-script:
-	docker exec -it python_dev python /app/exercises/$(SCRIPT)
+	docker exec -it python_dev python /exercises/$(SCRIPT)
 
 test:
-	docker exec -it python_dev pytest /app/exercises/tests
+	docker exec -it python_dev pytest /exercises/tests
 
 python-build:
 	docker compose build python_app
@@ -43,7 +43,7 @@ copy-data:
 
 copy-output:
 	@mkdir -p ./output
-	docker cp python_dev:/app/output/ ./output
+	docker cp python_dev:/output/ ./output
 
 # General management
 logs:

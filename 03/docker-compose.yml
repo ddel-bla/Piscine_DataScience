@@ -52,9 +52,9 @@ services:
       PYTHONUNBUFFERED  : 1
       MPLBACKEND        : agg
     volumes:
-      - exercises:/app/exercises
-      - ./output:/app/output
-      - ./notebooks:/app/notebooks
+      - exercises:/exercises
+      - ./output:/output
+      - ./notebooks:/notebooks
       - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       - ds_network

@@ -21,7 +21,7 @@ import numpy as np
 
 
 def figure_1():
-    df = pd.read_csv("/app/exercises/data/Test_knight.csv")
+    df = pd.read_csv("/exercises/data/Test_knight.csv")
     print(df.head())
 
     fig, axs = plt.subplots(6, 5, figsize=(20,20))
@@ -40,7 +40,7 @@ def figure_1():
     
 
 def figure_2():
-    df = pd.read_csv("/app/exercises/data/Train_knight.csv")
+    df = pd.read_csv("/exercises/data/Train_knight.csv")
     print(df.head())
     jedi_df = 
 
